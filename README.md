@@ -59,6 +59,7 @@ We follow the environment implementation in the [CVPO repo](https://github.com/l
 </p>
 
 ### Training
+
 For Safety-Gym tasks:
 
 ##### DDPM:
@@ -70,7 +71,7 @@ python main.py --agent algd_ddpm --env_name Safexp-PointButton1-v0 --experiment_
 ##### VE-SDE:
 
 ```shell
-python main.py --agent algd_vesde --env_name Safexp-PointButton1-v0 --experiment_name pointbutton1_vesde_algd --num_epoch 250
+python main.py --agent algd_ddpm --env_name Safexp-PointButton1-v0 --experiment_name pointbutton1_vesde_algd --num_epoch 250
 ```
 
 For MuJoCo tasks:
@@ -86,6 +87,12 @@ python main.py --agent algd_ddpm --env_name Ant-v3 --experiment_name ant_ddpm_al
 ```shell
 python main.py --agent algd_vesde --env_name Ant-v3 --experiment_name ant_vesde_algd --num_epoch 200
 ```
+
+Further, in this framework we provide several plugging function to better training & saving
+- Add `--cuda` to use gpu to accelerate training
+- Add `--use_tensorboard` to visual training info at real time
+- Add `--save_history` to save training info into csv file
+- Add `--save_parameters` to save final model checkpoint
 
 <!-- ## Paper Link and Citation
 

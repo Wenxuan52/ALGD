@@ -45,7 +45,7 @@ class ALGDAgent(Agent):
         self.policy = DiffusionPolicy(
             num_inputs=num_inputs,
             num_actions=action_space.shape[0],
-            hidden_dim=128,
+            hidden_dim=args.score_model_hidden_dim,
             T=self.T,
             action_space=action_space
         ).to(self.device)
@@ -186,7 +186,7 @@ class ALGDAgent(Agent):
         self.critic_optimizer.step()
 
         # safety critics
-        qc_idxs = np.random.choice(self.args.qc_ens_size, self.args.M)
+        qc_idxs = np.arange(self.args.qc_ens_size)
         current_QCs = self.safety_critics(state, action)
         with torch.no_grad():
             next_QCs = self.safety_critic_targets(next_state, next_action)
@@ -194,7 +194,7 @@ class ALGDAgent(Agent):
 
         if self.args.safetygym:
             mask = torch.ones_like(mask).to(self.device)
-        next_QC = next_QC_random_max.repeat(self.args.qc_ens_size, 1, 1) if self.args.intrgt_max else next_QCs
+        next_QC = next_QCs
         target_QCs = cost[None, :, :].repeat(self.args.qc_ens_size, 1, 1) + \
                      (mask[None, :, :].repeat(self.args.qc_ens_size, 1, 1) * self.safety_discount * next_QC)
         safety_critic_loss = F.mse_loss(current_QCs, target_QCs.detach())

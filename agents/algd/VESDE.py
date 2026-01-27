@@ -175,7 +175,7 @@ class DiffusionPolicy(nn.Module):
         self.apply(weights_init_)
         
         # ====== guidance ======
-        self.guidance_normalize = True
+        self.guidance_normalize = False
 
         # ====== action rescaling ======
         if action_space is None:
@@ -192,19 +192,6 @@ class DiffusionPolicy(nn.Module):
     def _extract(self, a, t, x_shape):
         out = a.gather(-1, t.long())
         return out.view(-1, *([1] * (len(x_shape) - 1)))
-
-    def q_sample(self, x0, noise, t):
-        """
-        q(x_t | x_0) = sqrt(alpha_bar_t) * x_0 + sqrt(1 - alpha_bar_t) * noise
-        """
-        sqrt_alphas_cumprod_t = self._extract(
-            self.sqrt_alphas_cumprod, t, x0.shape
-        )
-        sqrt_one_minus_alphas_cumprod_t = self._extract(
-            self.sqrt_one_minus_alphas_cumprod, t, x0.shape
-        )
-        return sqrt_alphas_cumprod_t * x0 + \
-            sqrt_one_minus_alphas_cumprod_t * noise
 
     def forward(self, state, x_t, t):
         if t.dim() == 0:
@@ -248,14 +235,13 @@ class DiffusionPolicy(nn.Module):
         step_std = torch.sqrt(delta_sigma2_t)
 
         # φ_theta(s, x_t, t)
-        phi = self.score(state, x_t, tau=t_batch)
+        a_t = self.latent_to_action(x_t)
+        phi = self.score(state, a_t, tau=t_batch)
 
         if self.guidance_normalize:
             phi = phi / (phi.norm(dim=-1, keepdim=True) + 1e-8)
 
-        drift = delta_sigma2_t * phi
-
-        mean = x_t - drift
+        mean = x_t + delta_sigma2_t * phi
 
         if t == 0:
             return mean
@@ -297,7 +283,6 @@ class DiffusionPolicy(nn.Module):
         """
         if steps is None:
             steps = self.T
-
         B = state.size(0)
         device = state.device
 
@@ -305,16 +290,19 @@ class DiffusionPolicy(nn.Module):
         x_t = torch.randn(B, self.action_dim, device=device) * sigma_T
 
         taus = torch.randint(low=0, high=steps, size=(B,), device=device)
-        x_tau = torch.zeros(B, self.action_dim, device=device)
+        a_tau = torch.zeros(B, self.action_dim, device=device)
 
         for t in reversed(range(steps)):
             x_t = self.p_sample(state, x_t, t)
+
             mask = (taus == t)
             if mask.any():
-                x_tau[mask] = x_t[mask]
+                a_t = self.latent_to_action(x_t)
+                a_tau[mask] = a_t[mask]
 
         a0 = self.latent_to_action(x_t)
-        return a0, x_tau, taus
+        return a0, a_tau, taus
+
 
 
     def sample_deterministic(self, state, steps=None):
@@ -335,12 +323,13 @@ class DiffusionPolicy(nn.Module):
             delta_sigma2_t = self._extract(self.ve_delta_sigma2, t_batch, x_t.shape)
             delta_sigma2_t = delta_sigma2_t.clamp(min=1e-8)
 
-            phi = self.score(state, x_t, tau=t_batch)
+            a_t = self.latent_to_action(x_t)
+            phi = self.score(state, a_t, tau=t_batch)
 
             if self.guidance_normalize:
                 phi = phi / (phi.norm(dim=-1, keepdim=True) + 1e-8)
 
-            x_t = x_t - delta_sigma2_t * phi
+            x_t = x_t + delta_sigma2_t * phi
 
         action = torch.tanh(x_t) * self.action_scale + self.action_bias
         return action
