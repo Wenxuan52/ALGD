@@ -88,7 +88,7 @@ python main.py --agent algd_ddpm --env_name Ant-v3 --experiment_name ant_ddpm_al
 python main.py --agent algd_vesde --env_name Ant-v3 --experiment_name ant_vesde_algd --num_epoch 200
 ```
 
-Further, in this framework we provide several plugging function to better training & saving
+Further, in this framework, we provide several plug-in functions to improve training and saving.
 - Add `--cuda` to use gpu to accelerate training
 - Add `--use_tensorboard` to visual training info at real time
 - Add `--save_history` to save training info into csv file
