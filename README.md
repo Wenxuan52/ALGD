@@ -37,7 +37,7 @@ ALGD/
 │   └── safetygym_env_sampler.py
 │
 ├── LICENSE
-├── main.py                                   # Experiment entry: loads config, builds env, train agents.
+├── main.py                                   # Core Experiment entry: loads config, builds env, train agents.
 └── README.md
 ```
 
