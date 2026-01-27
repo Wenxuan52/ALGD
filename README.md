@@ -1,7 +1,7 @@
 # Augmented Lagrangian-Guided Diffusion (ALGD)
 
 <p align="center">
-<img src="figures/experiments_illustration_single.jpg" width="80%">
+<img src="figures/experiments_illustration_single.jpg" width="55%">
 </p>
 
 ### Abstract
@@ -37,7 +37,7 @@ ALGD/
 │   └── safetygym_env_sampler.py
 │
 ├── LICENSE
-├── main.py                                   # Experiment entry: loads config, builds env/agent, runs train/eval
+├── main.py                                   # Experiment entry: loads config, builds env, train agents.
 └── README.md
 ```
 
@@ -78,13 +78,13 @@ For MuJoCo tasks:
 ##### DDPM:
 
 ```shell
-python main.py --agent algd_ddpm --env_name Ant-v3 --experiment_name ant_ddpm_algd --num_epoch 200 --cuda
+python main.py --agent algd_ddpm --env_name Ant-v3 --experiment_name ant_ddpm_algd --num_epoch 200
 ```
 
 ##### VE-SDE:
 
 ```shell
-python main.py --agent algd_vesde --env_name Ant-v3 --experiment_name ant_vesde_algd --num_epoch 200 --cuda
+python main.py --agent algd_vesde --env_name Ant-v3 --experiment_name ant_vesde_algd --num_epoch 200
 ```
 
 <!-- ## Paper Link and Citation
