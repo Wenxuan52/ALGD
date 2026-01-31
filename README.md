@@ -10,6 +10,11 @@ Diffusion policy sampling enables reinforcement learning (RL) to represent multi
 To address this gap, we propose **Augmented Lagrangian-Guided Diffusion** (**ALGD**), a novel algorithm for off-policy safe RL. By revisiting optimization theory and energy-based modeling, we show that the instability of primal–dual methods arises from the non-convex Lagrangian landscape. In diffusion-based RL, the Lagrangian naturally serves as an energy function guiding the denoising dynamics, but directly using it leads to unstable policy generation and training.
 ALGD resolves this issue by introducing an augmented Lagrangian that locally convexifies the energy landscape, yielding a stabilized policy generation and training, without altering the distribution of optimal policy. Theoretical analysis and extensive experiments demonstrate that ALGD is both theoretically grounded and empirically effective, achieving strong and stable performance across diverse environments.
 
+
+### Contributions
+
+Wenxuan Yuan and Xiaoyuan Cheng led the development of the codebase. Xiaoyuan Cheng supervised the overall ALGD project, and Wenxuan Yuan made equal contributions across the entire pipeline. All other authors contributed to reviewing and polishing the paper.
+
 ### Code Structure
 
 ```bash
