@@ -99,23 +99,23 @@ Further, in this framework, we provide several plug-in functions to improve trai
 - Add `--save_history` to save training info into csv file
 - Add `--save_parameters` to save final model checkpoint
 
-<!-- ## Paper Link and Citation
+## Paper Link and Citation
 
-**Paper:** [Information Shapes Koopman Representation](https://arxiv.org/abs/2510.13025)
+**Paper:** [How Does the Lagrangian Guide Safe Reinforcement Learning through Diffusion Models?](https://arxiv.org/abs/2602.02924)
 
 If you find this work useful in your research, please consider citing:
 
 ```bibtex
-@misc{cheng2025informationshapeskoopmanrepresentation,
-      title={Information Shapes Koopman Representation}, 
-      author={Xiaoyuan Cheng and Wenxuan Yuan and Yiming Yang and Yuanzhao Zhang and Sibo Cheng and Yi He and Zhuo Sun},
-      year={2025},
-      eprint={2510.13025},
+@misc{cheng2026doeslagrangianguidesafe,
+      title={How Does the Lagrangian Guide Safe Reinforcement Learning through Diffusion Models?}, 
+      author={Xiaoyuan Cheng and Wenxuan Yuan and Boyang Li and Yuanchao Xu and Yiming Yang and Hao Liang and Bei Peng and Robert Loftin and Zhuo Sun and Yukun Hu},
+      year={2026},
+      eprint={2602.02924},
       archivePrefix={arXiv},
       primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2510.13025}, 
+      url={https://arxiv.org/abs/2602.02924}, 
 }
-``` -->
+```
 
 ## Contact
 
